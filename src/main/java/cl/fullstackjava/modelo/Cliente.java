@@ -4,15 +4,23 @@ public class Cliente {
     private String runCliente;
     private String nombreCliente;
     private String apellidoCliente;
-    private int aniosCliente;
+    private String aniosCliente;
     private CategoriaEnum nombreCategoria;
 
-    public Cliente(String runCliente, String nombreCliente, String apellidoCliente, int aniosCliente) {
+    public Cliente(String runCliente, String nombreCliente, String apellidoCliente, String aniosCliente) {
         this.runCliente = runCliente;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.aniosCliente = aniosCliente;
         this.nombreCategoria = CategoriaEnum.Activo;
+    }
+
+    public Cliente(String runCliente, String nombreCliente, String apellidoCliente, String aniosCliente, CategoriaEnum categoriaEnum) {
+        this.runCliente = runCliente;
+        this.nombreCliente = nombreCliente;
+        this.apellidoCliente = apellidoCliente;
+        this.setAniosCliente(aniosCliente);
+        this.nombreCategoria = categoriaEnum;
     }
 
     public String getRunCliente() {
@@ -39,11 +47,11 @@ public class Cliente {
         this.apellidoCliente = apellidoCliente;
     }
 
-    public int getAniosCliente() {
+    public String getAniosCliente() {
         return aniosCliente;
     }
 
-    public void setAniosCliente(int aniosCliente) {
+    public void setAniosCliente(String aniosCliente) {
         this.aniosCliente = aniosCliente;
     }
 
@@ -57,12 +65,17 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "runCliente='" + runCliente + '\'' +
-                ", nombreCliente='" + nombreCliente + '\'' +
-                ", apellidoCliente='" + apellidoCliente + '\'' +
-                ", aniosCliente=" + aniosCliente +
-                ", nombreCategoria=" + nombreCategoria +
-                '}';
+        String sufixAnios = " año";
+        if (Integer.parseInt(aniosCliente) > 1) {
+            sufixAnios = " años";
+        }
+        return "-------------Datos del Cliente-------------\n\n" +
+                "RUN del Cliente: " + runCliente + "\n" +
+                "Nombre del Cliente: " + nombreCliente + "\n" +
+                "Apellido del Cliente: " + apellidoCliente + "\n" +
+                "Años como Cliente: " + aniosCliente + sufixAnios + "\n" +
+                "Categoría del Cliente: " + nombreCategoria + "\n\n" +
+                "-------------------------------------------";
     }
+
 }

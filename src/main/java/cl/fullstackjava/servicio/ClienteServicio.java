@@ -1,5 +1,6 @@
 package cl.fullstackjava.servicio;
 
+import cl.fullstackjava.modelo.CategoriaEnum;
 import cl.fullstackjava.modelo.Cliente;
 
 import java.util.ArrayList;
@@ -13,25 +14,44 @@ public class ClienteServicio {
         listaClientes = new ArrayList<>();
     }
 
-    public void listarClientes() {
-        for (Cliente cliente : listaClientes) {
-            System.out.println(cliente);
-        }
-    }
-
-    public void agregarCliente(String runCliente, String nombreCliente, String apellidoCliente, int aniosCliente) {
-        if(listaClientes != null) {
-            listaClientes.add(new Cliente(runCliente,nombreCliente,apellidoCliente,aniosCliente));
-        }
-    }
-
-    public void editarCliente(int indice, String runCliente, String nombreCliente, String apellidoCliente, int aniosCliente) {
-        if(indice > 0 && indice < listaClientes.size()) {
-            listaClientes.set(indice, new Cliente(runCliente, nombreCliente, apellidoCliente, aniosCliente));
-        }
-    }
-
-    public List<Cliente> getListaClientes() {
+    public List<Cliente> listarClientes() {
         return listaClientes;
+    }
+
+    public void agregarCliente(Cliente cliente) {
+        listaClientes.add(cliente);
+    }
+
+    public Cliente obtenerClientePorRun(String run) {
+        for (Cliente cliente : listaClientes) {
+            if (cliente.getRunCliente().equals(run)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
+
+    public void cambiarCategoriaCliente(Cliente cliente, CategoriaEnum nuevaCategoria) {
+        cliente.setNombreCategoria(nuevaCategoria);
+    }
+
+    public void actualizarRunCliente(Cliente cliente, String nuevoRun) {
+        cliente.setRunCliente(nuevoRun);
+    }
+
+    public void actualizarNombreCliente(Cliente cliente, String nuevoNombre) {
+        cliente.setNombreCliente(nuevoNombre);
+    }
+
+    public void actualizarApellidoCliente(Cliente cliente, String nuevoApellido) {
+        cliente.setApellidoCliente(nuevoApellido);
+    }
+
+    public void actualizarAniosCliente(Cliente cliente, String nuevoAnios) {
+        cliente.setAniosCliente(nuevoAnios);
+    }
+
+    public void setListaClientes(List<Cliente> listaClientes) {
+        this.listaClientes = listaClientes;
     }
 }

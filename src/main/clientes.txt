@@ -1,0 +1,9 @@
+-------------Datos del Cliente-------------
+
+RUN del Cliente: 1-1
+Nombre del Cliente: 1
+Apellido del Cliente: 2
+Años como Cliente: 45 años
+Categoría del Cliente: Activo
+
+-------------------------------------------
