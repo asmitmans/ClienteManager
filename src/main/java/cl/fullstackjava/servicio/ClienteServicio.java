@@ -14,6 +14,8 @@ public class ClienteServicio {
         listaClientes = new ArrayList<>();
     }
 
+    // Nota: modificado para gestionar toda la interaccion con el usuario en Menu
+    // esto ademas reemplaza el getListaClientes.
     public List<Cliente> listarClientes() {
         return listaClientes;
     }
@@ -42,6 +44,8 @@ public class ClienteServicio {
         cliente.setNombreCategoria(nuevaCategoria);
     }
 
+    //Nota: En vez de crear el metodo editarCliente se considero mas eficiente y adecuado
+    //crear un metodo por atributo.
     public void actualizarRunCliente(Cliente cliente, String nuevoRun) {
         cliente.setRunCliente(nuevoRun);
     }

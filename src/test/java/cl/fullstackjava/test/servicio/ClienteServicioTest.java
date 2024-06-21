@@ -18,7 +18,7 @@ public class ClienteServicioTest {
     }
 
     @Test
-    public void agrearClienteTest() {
+    public void agregarClienteTest() {
         Cliente cliente = new Cliente("123456789-9","Juan","Perez","5");
         clienteServicio.agregarCliente(cliente);
         // Comprobar que la lista de clientes tiene un cliente
@@ -28,7 +28,7 @@ public class ClienteServicioTest {
     }
 
     @Test
-    public void agrearClienteNullTest() {
+    public void agregarClienteNullTest() {
         // Añadir cliente null y comprobar si se genera la Exception esperada
         assertThrows(IllegalArgumentException.class, () -> clienteServicio.agregarCliente(null));
          // Comprobar que la lista de clientes sigue vacía

@@ -30,6 +30,13 @@ public class ArchivoServicio extends Exportador{
     public ArrayList<Cliente> cargarDatos(String pathFile) {
 
         File archivo = new File(pathFile);
+        File directorio = archivo.getParentFile();
+
+        if (!directorio.exists()) {
+            System.out.println("El directorio especificado no existe.");
+            return null;
+        }
+
         if(!archivo.exists()) {
             System.out.println("No existe el archivo en la ruta ingresada");
             return null;

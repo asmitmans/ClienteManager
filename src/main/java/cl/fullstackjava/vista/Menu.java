@@ -35,6 +35,7 @@ public class Menu {
         do {
             mostrarMenu();
             command = leerCommandInt();
+            limpiarPantalla();
 
             if (command == 1) {
                 listarCliente();
@@ -60,6 +61,10 @@ public class Menu {
         Utilidad.mostrarMesaje(mensaje);
     }
 
+    public void limpiarPantalla() {
+        Utilidad.limpiarPantalla();
+    }
+
     public void mostrarMenu() {
         String menu =
                 "1. Listar Clientes\n" +
@@ -76,15 +81,16 @@ public class Menu {
         try {
             return Integer.valueOf(scanner.nextLine());
         } catch (NumberFormatException e) {
-            mostrarMensaje("Opcion ingresada invalida");
+            mostrarMensaje("No se ingresó un numero valido");
         }
         return 0;
     }
 
     public void listarCliente() {
-        for(Cliente cliente : clienteServicio.listarClientes()) {
-            mostrarMensaje(cliente.toString());
-        }
+        // Requerimiento: Se deben utilizar iteraciones de la librería Streams.
+        clienteServicio.listarClientes().stream()
+                .map(cliente -> cliente.toString())
+                .forEach(mensaje -> mostrarMensaje(mensaje));
         mostrarMensaje("\n");
     }
 
@@ -124,16 +130,20 @@ public class Menu {
         command = leerCommandInt();
         if (command == 1) {
             Cliente cliente = obtenerClientePorRun();
-            menuCambiarEstado(cliente);
-            op = leerCommandInt();
-            cambiarCategoriaCliente(cliente,op);
+            if (cliente!=null) {
+                menuCambiarEstado(cliente);
+                op = leerCommandInt();
+                cambiarCategoriaCliente(cliente,op);
+            }
         } else if (command == 2) {
             Cliente cliente = obtenerClientePorRun();
-            menuModificarDatos(cliente);
-            op = leerCommandInt();
-            modificarDatosCliente(cliente, op);
+            if(cliente!=null) {
+                menuModificarDatos(cliente);
+                op = leerCommandInt();
+                modificarDatosCliente(cliente, op);
+            }
         } else {
-            mostrarMensaje("opcion ingresada invalida");
+            mostrarMensaje("Opción ingresada inválida para editar cliente.");
         }
     }
 
@@ -179,7 +189,7 @@ public class Menu {
                 clienteServicio.cambiarCategoriaCliente(cliente, CategoriaEnum.Activo);
             }
         } else if (op!=2) {
-            mostrarMensaje("opcion ingresada invalida");
+            mostrarMensaje("Opción ingresada inválida para cambiar categoria.");
         }
     }
 
@@ -211,7 +221,7 @@ public class Menu {
             String nuevoAnios = scanner.nextLine();
             clienteServicio.actualizarAniosCliente(cliente, nuevoAnios);
         } else {
-            System.out.println("opcion ingresada invalida\n");
+            mostrarMensaje("Opción ingresada inválida para modificar datos del cliente.");
         }
     }
 
