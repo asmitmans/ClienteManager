@@ -19,6 +19,13 @@ public class ClienteServicio {
     }
 
     public void agregarCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente no puede ser nulo");
+        }
+        validarCliente(cliente);
+        if(obtenerClientePorRun(cliente.getRunCliente())!=null) {
+            throw new IllegalArgumentException("Ya existe un cliente con el RUN ingresado");
+        }
         listaClientes.add(cliente);
     }
 
@@ -54,4 +61,23 @@ public class ClienteServicio {
     public void setListaClientes(List<Cliente> listaClientes) {
         this.listaClientes = listaClientes;
     }
+
+    public void validarCliente(Cliente cliente) {
+        if(cliente.getRunCliente() == null || cliente.getRunCliente().trim().isEmpty() ) {
+            throw new IllegalArgumentException("El run no puede ser nulo o vacio");
+        }
+        if(cliente.getNombreCliente() == null || cliente.getNombreCliente().trim().isEmpty() ) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
+        }
+        if(cliente.getApellidoCliente() == null || cliente.getApellidoCliente().trim().isEmpty() ) {
+            throw new IllegalArgumentException("El apellido no puede ser nulo o vacio");
+        }
+        if(cliente.getAniosCliente() == null || cliente.getAniosCliente().trim().isEmpty() ) {
+            throw new IllegalArgumentException("Los años como cliente no pueden ser nulos o vacios");
+        }
+        if(cliente.getNombreCategoria() == null) {
+            throw new IllegalArgumentException("La categoria no puede ser nula");
+        }
+    }
+
 }

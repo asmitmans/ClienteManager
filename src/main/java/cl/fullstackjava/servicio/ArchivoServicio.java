@@ -11,9 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArchivoServicio extends Exportador{
+
+    private Exportador exportador;
+
+    public void setExportador(Exportador exportador) {
+        this.exportador = exportador;
+    }
+
     @Override
     public void exportar(String fileName, List<Cliente> listaClientes) {
-
+        if(exportador != null) {
+            exportador.exportar(fileName, listaClientes);
+        } else {
+            System.out.println("No se ha especificado un exportador.");
+        }
     }
 
     public ArrayList<Cliente> cargarDatos(String pathFile) {

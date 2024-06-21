@@ -3,6 +3,7 @@ package cl.fullstackjava.vista;
 import cl.fullstackjava.modelo.CategoriaEnum;
 import cl.fullstackjava.modelo.Cliente;
 import cl.fullstackjava.servicio.*;
+import cl.fullstackjava.utilidades.Utilidad;
 
 import java.io.File;
 import java.util.List;
@@ -47,10 +48,16 @@ public class Menu {
                 exportarDatos();
             } else if (command == 6) {
                 terminarPrograma();
+            } else {
+                mostrarMensaje("opcion invalida");
             }
 
         } while (command != 6);
 
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        Utilidad.mostrarMesaje(mensaje);
     }
 
     public void mostrarMenu() {
@@ -62,44 +69,50 @@ public class Menu {
                         "5. Exportar Datos\n" +
                         "6. Salir\n" +
                         "Ingrese una opción: ";
-        System.out.print(menu);
+        mostrarMensaje(menu);
     }
 
     public int leerCommandInt() {
         try {
             return Integer.valueOf(scanner.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Opcion ingresada invalida");
+            mostrarMensaje("Opcion ingresada invalida");
         }
         return 0;
     }
 
     public void listarCliente() {
         for(Cliente cliente : clienteServicio.listarClientes()) {
-            System.out.println(cliente);
+            mostrarMensaje(cliente.toString());
         }
-        System.out.println();
+        mostrarMensaje("\n");
     }
 
     public void agregarCliente() {
 
-        System.out.println("-------------Crear Cliente-------------\n");
+        mostrarMensaje("-------------Crear Cliente-------------\n");
 
-        System.out.println("Ingresa RUN del Cliente:");
+        mostrarMensaje("Ingresa RUN del Cliente:");
         String runCliente = scanner.nextLine();
-        System.out.println("Ingresa Nombre del Cliente:");
+        mostrarMensaje("Ingresa Nombre del Cliente:");
         String nombreCliente = scanner.nextLine();
-        System.out.println("Ingresa Apellido del Cliente:");
+        mostrarMensaje("Ingresa Apellido del Cliente:");
         String apellidoCliente = scanner.nextLine();
-        System.out.println("Ingresa años como Cliente:");
+        mostrarMensaje("Ingresa años como Cliente:");
         String aniosCliente = scanner.nextLine();
         if (aniosCliente.split(" ").length > 1) {
             aniosCliente = aniosCliente.split(" ")[0];
         }
         Cliente cliente = new Cliente(runCliente,nombreCliente,apellidoCliente,aniosCliente);
-        clienteServicio.agregarCliente(cliente);
 
-        System.out.println("---------------------------------------");
+        try {
+            clienteServicio.agregarCliente(cliente);
+            mostrarMensaje("Cliente agregado exitosamente");
+        } catch (IllegalArgumentException e) {
+            mostrarMensaje("Error al agregar cliente: " + e.getMessage());
+        }
+
+        mostrarMensaje("---------------------------------------");
     }
 
     public void editarCliente() {
@@ -120,17 +133,17 @@ public class Menu {
             op = leerCommandInt();
             modificarDatosCliente(cliente, op);
         } else {
-            System.out.println("opcion ingresada invalida");
+            mostrarMensaje("opcion ingresada invalida");
         }
     }
 
     public Cliente obtenerClientePorRun() {
 
-        System.out.println("Ingrese RUN del Cliente a editar:");
+        mostrarMensaje("Ingrese RUN del Cliente a editar:");
         String runCliente = scanner.nextLine();
         Cliente cliente = clienteServicio.obtenerClientePorRun(runCliente);
         if (cliente == null) {
-            System.out.println("RUN ingresado no encontrado");
+            mostrarMensaje("RUN ingresado no encontrado");
             return null;
         }
 
@@ -138,24 +151,24 @@ public class Menu {
     }
 
     public void menuEditarCliente() {
-        System.out.println("-------------Editar Cliente-------------");
-        System.out.println("Seleccione qué desea hacer:");
-        System.out.println("1.-Cambiar el estado del Cliente");
-        System.out.println("2.-Editar los datos ingresados del Cliente\n");
-        System.out.println("Ingrese opcion:");
+        mostrarMensaje("-------------Editar Cliente-------------");
+        mostrarMensaje("Seleccione qué desea hacer:");
+        mostrarMensaje("1.-Cambiar el estado del Cliente");
+        mostrarMensaje("2.-Editar los datos ingresados del Cliente\n");
+        mostrarMensaje("Ingrese opcion:");
     }
 
     public void menuCambiarEstado(Cliente cliente) {
-        System.out.println("-----Actualizando estado del Cliente----");
-        System.out.println("El estado actual es: " + cliente.getNombreCategoria());
+        mostrarMensaje("-----Actualizando estado del Cliente----");
+        mostrarMensaje("El estado actual es: " + cliente.getNombreCategoria());
         if (cliente.getNombreCategoria().equals(CategoriaEnum.Activo)) {
-            System.out.println("1.-Si desea cambiar el estado del Cliente a Inactivo");
+            mostrarMensaje("1.-Si desea cambiar el estado del Cliente a Inactivo");
         } else {
-            System.out.println("1.-Si desea cambiar el estado del Cliente a Activo");
+            mostrarMensaje("1.-Si desea cambiar el estado del Cliente a Activo");
         }
-        System.out.println("2.-Si desea mantener el estado del cliente " + cliente.getNombreCategoria());
-        System.out.println();
-        System.out.println("Ingrese opcion: ");
+        mostrarMensaje("2.-Si desea mantener el estado del cliente " + cliente.getNombreCategoria());
+        mostrarMensaje("\n");
+        mostrarMensaje("Ingrese opcion: ");
     }
 
     public void cambiarCategoriaCliente(Cliente cliente, int op) {
@@ -166,83 +179,86 @@ public class Menu {
                 clienteServicio.cambiarCategoriaCliente(cliente, CategoriaEnum.Activo);
             }
         } else if (op!=2) {
-            System.out.println("opcion ingresada invalida");
+            mostrarMensaje("opcion ingresada invalida");
         }
     }
 
     public void menuModificarDatos(Cliente cliente) {
-        System.out.println("----Actualizando datos del Cliente-----");
-        System.out.println("1.-El RUN del Cliente es: " + cliente.getRunCliente());
-        System.out.println("2.-El Nombre del Cliente es: " + cliente.getNombreCliente());
-        System.out.println("3.-El Apellido del Cliente es: " + cliente.getApellidoCliente());
-        System.out.println("4.-Los años como Cliente son: " + cliente.getAniosCliente() + " años");
-        System.out.println();
-        System.out.print("Ingrese opcion a editar de los datos del cliente:");
+        mostrarMensaje("----Actualizando datos del Cliente-----");
+        mostrarMensaje("1.-El RUN del Cliente es: " + cliente.getRunCliente());
+        mostrarMensaje("2.-El Nombre del Cliente es: " + cliente.getNombreCliente());
+        mostrarMensaje("3.-El Apellido del Cliente es: " + cliente.getApellidoCliente());
+        mostrarMensaje("4.-Los años como Cliente son: " + cliente.getAniosCliente() + " años");
+        mostrarMensaje("\n");
+        mostrarMensaje("Ingrese opcion a editar de los datos del cliente: ");
     }
 
     public void modificarDatosCliente(Cliente cliente, int op) {
         if (op == 1) {
-            System.out.println("Ingrese nuevo RUN del Cliente: ");
+            mostrarMensaje("Ingrese nuevo RUN del Cliente: ");
             String nuevoRun = scanner.nextLine();
             clienteServicio.actualizarRunCliente(cliente, nuevoRun);
         } else if (op == 2) {
-            System.out.println("Ingrese nuevo Nombre del Cliente: ");
+            mostrarMensaje("Ingrese nuevo Nombre del Cliente: ");
             String nuevoNombre = scanner.nextLine();
             clienteServicio.actualizarNombreCliente(cliente, nuevoNombre);
         } else if (op == 3) {
-            System.out.println("Ingrese nuevo Apellido del Cliente: ");
+            mostrarMensaje("Ingrese nuevo Apellido del Cliente: ");
             String nuevoApellido = scanner.nextLine();
             clienteServicio.actualizarApellidoCliente(cliente, nuevoApellido);
         } else if (op == 4) {
-            System.out.println("Ingrese años como Cliente: ");
+            mostrarMensaje("Ingrese años como Cliente: ");
             String nuevoAnios = scanner.nextLine();
             clienteServicio.actualizarAniosCliente(cliente, nuevoAnios);
         } else {
-            System.out.println("opcion ingresada invalida");
+            System.out.println("opcion ingresada invalida\n");
         }
     }
 
     public void importarDatos() {
-        System.out.println("----------------Cargar Datos-------------------\n");
-        System.out.println("Ingresa la ruta en donde se encuentra el archivo DBClientes.csv:\n");
+        mostrarMensaje("----------------Cargar Datos-------------------");
+        mostrarMensaje("Ingresa la ruta en donde se encuentra el archivo DBClientes.csv:");
         String pathArchivo = scanner.nextLine();
         pathArchivo += File.separator + fileName1;
-        System.out.println("-----------------------------------------------\n");
+        mostrarMensaje("-----------------------------------------------");
 
         List<Cliente> clientesImportados = archivoServicio.cargarDatos(pathArchivo);
         if (clientesImportados != null && !clientesImportados.isEmpty()) {
             clienteServicio.setListaClientes(clientesImportados);
-            System.out.println("Datos cargados correctamente en la lista");
+            mostrarMensaje("Datos cargados correctamente en la lista");
         } else {
-            System.out.println("No se encontraron datos para importar o hubo un error al cargar los datos.");
+            mostrarMensaje("No se encontraron datos para importar o hubo un error al cargar los datos.");
         }
     }
 
     public void exportarDatos() {
-        System.out.println("---------Exportar Datos-----------\n");
-        System.out.println("Seleccione el formato a exportar: \n");
-        System.out.println("1.-Formato csv");
-        System.out.println("2.-Formato txt");
-        System.out.println();
-        System.out.println("Ingrese una opción para exportar:");
+        String mensaje = "---------Exportar Datos-----------\n" +
+                         "Seleccione el formato a exportar: \n" +
+                         "1.-Formato csv \n" +
+                         "2.-Formato txt \n \n" +
+                         "Ingrese una opción para exportar:\n";
+        mostrarMensaje(mensaje);
         int op = leerCommandInt();
-        System.out.println("-----------------------------------------------\n");
-        System.out.println("---------Exportar Datos-----------\n");
+        mensaje = "-----------------------------------------------\n" +
+                  "---------Exportar Datos-----------\n";
+        mostrarMensaje(mensaje);
         if (op==1) {
-            System.out.println("Ingresa la ruta en donde desea exportar el archivo clientes.csv:");
+            mostrarMensaje("Ingresa la ruta en donde desea exportar el archivo clientes.csv:");
             String pathFile = scanner.nextLine();
             pathFile += File.separator + fileName.toLowerCase() + ".csv";
-            exportadorCsv.exportar(pathFile,clienteServicio.listarClientes());
+            archivoServicio.setExportador(exportadorCsv);
+            archivoServicio.exportar(pathFile,clienteServicio.listarClientes());
         } else if (op==2) {
-            System.out.println("Ingresa la ruta en donde desea exportar el archivo clientes.txt:");
+            mostrarMensaje("Ingresa la ruta en donde desea exportar el archivo clientes.txt:");
             String pathFile = scanner.nextLine();
             pathFile += File.separator + fileName.toLowerCase() + ".txt";
-            exportadorTxt.exportar(pathFile,clienteServicio.listarClientes());
+            archivoServicio.setExportador(exportadorTxt);
+            archivoServicio.exportar(pathFile,clienteServicio.listarClientes());
         }
     }
 
     public void terminarPrograma() {
-        System.out.println("Cerrando...");
+        mostrarMensaje("Cerrando...");
     }
 
 }
